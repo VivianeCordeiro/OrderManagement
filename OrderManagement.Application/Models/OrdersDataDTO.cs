@@ -9,7 +9,7 @@ using OrderManagement.Converters;
 
 namespace OrderManagement.Application.Models
 {
-    public class OrdersData
+    public class OrdersDataDTO
     {
         public string Documento { get; set; }
         public string RazaoSocial { get; set;}

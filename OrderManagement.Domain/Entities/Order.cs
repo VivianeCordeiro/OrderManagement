@@ -9,7 +9,7 @@ namespace OrderManagement.Domain.Entities
     public class Order
     {
         public int Id { get; set; }
-        public string Number { get; set; }
+        public int Number { get; set; }
         public string Date { get; set; }
 
 

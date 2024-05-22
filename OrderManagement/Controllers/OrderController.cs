@@ -18,14 +18,17 @@ namespace OrderManagement.Web.Controllers
             _orderService = orderService;
         }
 
+        [Route("/GetOrders")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             var orders = await _orderService.GetOrdersAsync();
             return Ok(orders);
         }
+
+        [Route("/CreateOrder")]
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(Order order)
+        public async Task<ActionResult> CreateOrder(List<Order> order)
         {
             var result = await _orderService.CreateOrders(order);
             if (result)
@@ -35,9 +38,23 @@ namespace OrderManagement.Web.Controllers
             return BadRequest("Failed to create order.");
 
         }
+
+        [Route("/CreateClient")]
+        [HttpPost]
+        public async Task<ActionResult> CreateClient(List<Client> clients)
+        {
+            var result = await _orderService.CreateClients(clients);
+            if (result)
+            {
+                return Ok("Clients created successfully.");
+            }
+            return BadRequest("Failed to create clients.");
+
+        }
+
         [Route("/DataManagement")]
         [HttpPost]
-        public async Task<ActionResult<AnalyzedData>> DataManagement([FromBody] List<OrdersData> ordersData)
+        public async Task<ActionResult<AnalyzedDataDTO>> DataManagement([FromBody] List<OrdersDataDTO> ordersData)
         {
             var result = await _orderService.DataManagement(ordersData);
             if (result != null)

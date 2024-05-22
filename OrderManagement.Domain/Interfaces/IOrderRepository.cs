@@ -7,7 +7,9 @@ namespace OrderManagement.Domain.Interfaces
     public interface IOrderRepository
     {
         Task<IEnumerable<Order>> GetOrdersAsync();
-        Task<bool> CreateOrders (Order order);
+        Task<bool> CreateOrders (List<Order> orders);
+        Task<bool> CreateClients(List<Client> clients);
+
 
     }
 }

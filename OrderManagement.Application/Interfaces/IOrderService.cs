@@ -9,7 +9,9 @@ namespace OrderManagement.Application.Interfaces
     public interface IOrderService
     {
         Task<IEnumerable<Order>> GetOrdersAsync();
-        Task<bool> CreateOrders(Order data);
-        Task<AnalyzedData> DataManagement(List<OrdersData> ordersData);
+        Task<bool> CreateOrders(List<Order> data);
+        Task<bool> CreateClients(List<Client> data);
+
+        Task<AnalyzedDataDTO> DataManagement(List<OrdersDataDTO> ordersData);
     }
 }

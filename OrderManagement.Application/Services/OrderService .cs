@@ -27,15 +27,29 @@ namespace OrderManagement.Application.Services
             return await _orderRepository.GetOrdersAsync();
         }
 
-        public async Task<bool> CreateOrders(Order data)
+        public async Task<bool> CreateOrders(List<Order> data)
         {
             return await _orderRepository.CreateOrders(data);
-            //throw new NotImplementedException();
+            
         }
 
-        public async Task<AnalyzedData> DataManagement(List<OrdersData> ordersData)
+        public async Task<AnalyzedDataDTO> DataManagement(List<OrdersDataDTO> ordersData)
         {
-            var data = new AnalyzedData();
+            List<Client> clients = ordersData.Select(client => new Client
+            {
+                CEP = client.Documento,
+                Name = client.RazaoSocial,
+            }).ToList();
+            var resultClient =  await _orderRepository.CreateClients(clients);
+
+            List<Order> orders = ordersData.Select(order => new Order
+            {
+                Number = order.NumeroPedido,
+                Date = order.Date.ToString(),
+            }).ToList();
+            var resultOrder = await _orderRepository.CreateOrders(orders);
+
+            var data = new AnalyzedDataDTO();
 
             data.Celular = ordersData.Count(item => item.Produto == "Celular");
             data.Televisao = ordersData.Count(item => item.Produto == "Televisão");
@@ -48,7 +62,7 @@ namespace OrderManagement.Application.Services
                 {
                     case "Sul":
                         data.Sul++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -61,7 +75,7 @@ namespace OrderManagement.Application.Services
                         break;
                     case "Sudeste":
                         data.Sudeste++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -72,7 +86,7 @@ namespace OrderManagement.Application.Services
                         break;
                     case "Nordeste":
                         data.Nordeste++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -83,7 +97,7 @@ namespace OrderManagement.Application.Services
                         break;
                     case "Norte":
                         data.Norte++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -94,7 +108,7 @@ namespace OrderManagement.Application.Services
                         break;
                     case "Centro-Oeste":
                         data.CentroOeste++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -105,7 +119,7 @@ namespace OrderManagement.Application.Services
                         break;
                     case "SP":
                         data.SP++;
-                        data.Sales.Add(new Sales
+                        data.Sales.Add(new SalesDTO
                         {
                             Name = order.RazaoSocial,
                             Product = order.Produto,
@@ -180,6 +194,13 @@ namespace OrderManagement.Application.Services
             if (product == "Notebook") { return 3000; }
             else { return 1000; }
         }
+
+        public async Task<bool> CreateClients(List<Client> data)
+        {
+            return await _orderRepository.CreateClients(data);
+
+        }
+
         private class ViaCepResponse
         {
             public string uf { get; set; }

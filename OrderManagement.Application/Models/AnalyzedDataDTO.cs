@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.Models
 {
-    public class AnalyzedData
+    public class AnalyzedDataDTO
     {
         public int Norte { get; set; }
         public int Nordeste { get; set; }
@@ -17,10 +17,10 @@ namespace OrderManagement.Application.Models
         public int Televisao { get; set; }
         public int Notebook { get; set; }
         public int Celular { get; set;}
-        public List<Sales> Sales { get; set; }
-        public AnalyzedData()
+        public List<SalesDTO> Sales { get; set; }
+        public AnalyzedDataDTO()
         {
-            Sales = new List<Sales>(); // Inicializa a lista
+            Sales = new List<SalesDTO>(); 
         }
 
     }

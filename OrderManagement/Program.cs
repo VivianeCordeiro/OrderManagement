@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using OrderManagement.Application.Interfaces;
 using OrderManagement.Application.Services;
 using OrderManagement.Domain.Interfaces;
@@ -20,6 +22,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new OrderManagement.Converters.DateTimeConverter2());
 });
+
 // Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
@@ -44,7 +47,7 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(services);
 }
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -52,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderManagement API v1");
-        c.RoutePrefix = "swagger"; // Change to empty string to serve Swagger UI at root
+        c.RoutePrefix = "swagger"; 
     });
 }
 else
@@ -64,6 +67,16 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+
+app.UseCors(policy =>
+{
+    policy.WithOrigins("http://localhost:3000") // Permitir apenas solicitações do frontend
+        .AllowAnyMethod() 
+        .AllowAnyHeader() 
+        .AllowCredentials(); 
+});
+
 app.UseAuthorization();
 
 app.MapControllerRoute(

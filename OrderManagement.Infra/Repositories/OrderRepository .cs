@@ -20,12 +20,16 @@ namespace OrderManagement.InfraData.Repositories
         {
             return await _context.Orders.ToListAsync();
         }
-        public async Task<bool> CreateOrders(Order data)
+        public async Task<bool> CreateOrders(List<Order> data)
         {
             try
             {
-                _context.Orders.Add(data);
-                await _context.SaveChangesAsync();
+                foreach(var item in data) 
+                {
+                    _context.Orders.Add(item);
+                    await _context.SaveChangesAsync();
+                }
+                
                 return true; // Indica que a operação foi bem-sucedida
             }
             catch (Exception ex)
@@ -33,6 +37,25 @@ namespace OrderManagement.InfraData.Repositories
                 return false; // Indica que a operação falhou
             }
         }
+        public async Task<bool> CreateClients(List<Client> data)
+        {
+            try
+            {
+                foreach(var client in data)
+                {
+                    _context.Clients.Add(client);
+                    await _context.SaveChangesAsync();
+                }
+                
+                return true; // Indica que a operação foi bem-sucedida
+            }
+            catch (Exception ex)
+            {
+                return false; // Indica que a operação falhou
+            }
+        }
+
+       
     }
        
 }

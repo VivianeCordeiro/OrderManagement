@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace OrderManagement.Application.Models
 {
-    public class Sales
+    public class ClientDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Product { get; set; }
-        public double FinalValue { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public string CEP { get; set; }
 
     }
 }
